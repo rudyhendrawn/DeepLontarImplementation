@@ -1,12 +1,13 @@
 # Create a class that Implements YOLOv3 model architecture
 # The input model is the image data and its annotations (bounding boxes) and class_id in format [xmin, ymin, xmax, ymax, class_id]
+from __future__ import division
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-
 from torch.autograd import Variable
-from __future__ import division
+
 
 def parse_cfg(cfg_file):
 	"""
