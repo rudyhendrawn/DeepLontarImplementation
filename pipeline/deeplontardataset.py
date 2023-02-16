@@ -33,7 +33,8 @@ class DeepLontarDataset(torch.utils.data.Dataset):
 		Args:
 			idx (int): Index
 		Returns:
-			tuple: (image, target) where target is a dictionary of the form
+			image (PIL Image): Image
+			boxes (list): List of bounding boxes in the format [xmin, ymin, xmax, ymax, class_id]
 		"""
 		image_path = self.image_paths[idx]
 		label_path = self.label_paths[idx]
