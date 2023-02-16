@@ -1,5 +1,8 @@
-# Create a class that Implements YOLOv3 model architecture
-# The input model is the image data and its annotations (bounding boxes) and class_id in format [xmin, ymin, xmax, ymax, class_id]
+"""
+Create a class that Implements YOLOv3 model architecture
+The input model is the image data and its annotations (bounding boxes) and class_id in format [xmin, ymin, xmax, ymax, class_id]
+Source: https://github.com/ayooshkathuria/YOLO_v3_tutorial_from_scratch/blob/master/darknet.py
+"""
 from __future__ import division
 
 import torch
