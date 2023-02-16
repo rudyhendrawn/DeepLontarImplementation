@@ -6,7 +6,7 @@ Source: https://github.com/ayooshkathuria/YOLO_v3_tutorial_from_scratch/blob/mas
 import torch
 import torchvision
 
-class YOLO(nn.Module):
+class YOLO(torch.nn.Module):
 	def __init__(self, num_classes, anchors=None):
 		super().__init__()
 		self.darknet = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True).model.backbone
