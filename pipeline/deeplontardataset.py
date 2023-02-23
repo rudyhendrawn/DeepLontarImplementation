@@ -55,7 +55,6 @@ class DeepLontarDataset(torch.utils.data.Dataset):
 
 		# print(boxes)
 		image = Image.open(image_path).convert('RGB')
-		
 		return image, boxes
 
 
@@ -71,6 +70,7 @@ def visualize_dataset(dataset, idx):
 	"""
 	image, boxes = dataset[idx]
 	image = np.array(image)
+
 	fig, ax = plt.subplots(1)
 	ax.imshow(image)
 	for box in boxes:
@@ -85,5 +85,4 @@ def visualize_dataset(dataset, idx):
 		bbox = plt.Rectangle((xmin, ymin), width, height, linewidth=0.5, edgecolor='r', facecolor='none')
 		ax.add_patch(bbox)
 		# ax.text(xmin, ymin, f'{class_id}', fontsize=10, color='r')
-
 	plt.show()
