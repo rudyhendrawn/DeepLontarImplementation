@@ -57,7 +57,21 @@ class DeepLontarDataset(torch.utils.data.Dataset):
 		image = Image.open(image_path).convert('RGB')
 		return image, boxes
 
-
+	# Create a method to split the dataset into train and test set
+	def split_dataset(self, split_ratio=0.8):
+		"""
+		Function to split the dataset into train and test set.
+		Args:
+			split_ratio (float): Ratio of the train set, for instance, 0.8 means 80% of the dataset is used for training
+		Returns:
+			train_dataset (DeepLontarDataset): Train dataset
+			test_dataset (DeepLontarDataset): Test dataset
+		"""
+		train_size = int(len(self) * split_ratio)
+		test_size = len(self) - train_size
+		train_dataset, test_dataset = torch.utils.data.random_split(self, [train_size, test_size])
+		return train_dataset, test_dataset
+		
 def visualize_dataset(dataset, idx):
 	"""
 	Function that can be used to visualize the dataset with its annotations.
