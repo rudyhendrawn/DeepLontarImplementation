@@ -6,8 +6,10 @@ from model_architecture.darknet import YOLO
 
 
 class Trainer:
-	def __init__(self, dataset, model, optimizer, loss_fn, device):
-		self.dataset = dataset
+	def __init__(self, train_loader, test_loader, model, optimizer, loss_fn, device):
+		# self.dataset = dataset
+		self.train_loader = train_loader
+		self.test_loader = test_loader
 		self.model = model
 		self.optimizer = optimizer
 		self.loss_fn = loss_fn
@@ -15,11 +17,11 @@ class Trainer:
 
 	def train(self, num_epochs, batch_size, learning_rate):
 		# Define data loader
-		dataloader = DataLoader(self.dataset, batch_size=batch_size, shuffle=True)
+		# dataloader = DataLoader(self.dataset, batch_size=batch_size, shuffle=True)
 
 		# Train the model
 		for epoch in range(num_epochs):
-			for batch_idx, (images, labels) in enumerate(dataloader):
+			for batch_idx, (images, labels) in enumerate(self.train_loader):
 				# Move images and labels to device
 				images = images.to(self.device)
 				labels = labels.to(self.device)
@@ -37,11 +39,11 @@ class Trainer:
 
 				# Print training progress
 				if batch_idx % 10 == 0:
-					print(f'Epoch [{epoch}/{num_epochs}] Batch {batch_idx}/{len(dataloader)} Loss: {loss.item():.4f}')
+					print(f'Epoch [{epoch}/{num_epochs}] Batch {batch_idx}/{len(self.train_loader)} Loss: {loss.item():.4f}')
 
 	def evaluate(self, batch_size):
 		# Define data loader
-		dataloader = DataLoader(self.dataset, batch_size=batch_size, shuffle=False)
+		# dataloader = DataLoader(self.dataset, batch_size=batch_size, shuffle=False)
 
 		# Initialize counters for evaluation metrics
 		total_chars = 0
@@ -54,22 +56,22 @@ class Trainer:
 		# Evaluate the model
 		self.model.eval()
 		with torch.no_grad():
-			for images, labels in dataloader:
+			for images, labels in self.test_loader:
 				# Move images and targets to device
 				images = images.to(self.device)
 				labels = labels.to(self.device)
 
 				# Forward pass
-				predictions = self.model(images)
+				self.test_loader = self.model(images)
 				predicted_boxes = self.model.get_output_boxes(	predictions, 
-																self.dataset.input_shape,
-																self.dataset.anchors,
-																self.dataset.num_classes
+																self.test_loader.input_shape,
+																self.test_loader.anchors,
+																self.test_loader.num_classes
 								)
 
 				# Convert predicted boxes and ground truth labels to text
-				predicted_text = self.dataset.decode_output_boxes(predicted_boxes)
-				label_text = self.dataset.decode_target_boxes(labels)
+				predicted_text = self.test_loader.decode_output_boxes(predicted_boxes)
+				label_text = self.test_loader.decode_target_boxes(labels)
 
 				# Compute evaluation metrics
 				for predicted, label in zip(predicted_text, label_text):
